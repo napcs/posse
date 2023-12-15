@@ -1,18 +1,54 @@
-# Hello World
+# Publish On Own Site, Syndicate Everywhere (POSSE)
 
-This is the default project that is scaffolded out when you run `npx @temporalio/create@latest ./myfolder`.
+Demo code. Not for production use.
 
-The [Hello World Tutorial](https://learn.temporal.io/getting_started/typescript/hello_world_in_typescript/) walks through the code in this sample.
+Send a single message to Twitter, Mastodon, and BlueSky using Temporal to guarantee delivery of messages.
 
-### Running this sample
+How it works
+- Web form posts to web server
+- Web server uses Temporal Client to start a Workflow Execution
+- Temporal Workers send the messages simultaneously by executing the Workflow.
+- Failures are retried indefinitely.
 
-1. `temporal server start-dev` to start [Temporal Server](https://github.com/temporalio/cli/#installation).
-1. `npm install` to install dependencies.
-1. `npm run start.watch` to start the Worker.
-1. In another shell, `npm run workflow` to run the Workflow Client.
+Limitations:
+- Only for sending initial messages. Cannot communicate, read, or thread.
+- No support for DMs or replies.
+- Twitter API counts ALL urls as 23 characters and I don't have defenses against that. Keep your messages under 280 characters and remember that even short URLs get expanded to 23 characters. Twitter posting will fail forever, as their API doesn't give a reason for the failure that's distinct. I did not write code to catch this.
+- You must use the Temporal Web UI to cancel a failed or stuck workflow. Visit https://localhost:8233 to locate and terminate the Workflow.
 
-The Workflow should return:
 
-```bash
-Hello, Temporal!
+# Running the project
+
+Copy `.env.example` to `.env` and fill out the values with your X/Twitter API keys, Mastodon keys, and BlueSky keys.
+
+* Twitter/X api is free for posting only. Must register an app.
+* Mastodon api is free and just needs your api key for your app.
+* BlueSky uses your username and password for their API.
+
+Start the Temporal server
+
 ```
+temporal server start-dev --db-filename temporal.db
+```
+
+Then start a Temporal Worker process:
+
+```
+npm start
+```
+
+Finally, start the web server:
+
+```
+npm run start.server
+```
+
+Visit `http://localhost:3000` and enter your content and publish it.
+
+## License
+
+MIT.
+
+No warranty. 
+
+This is not an official Temporal example and should only be used to explore the platform. It's not production ready.

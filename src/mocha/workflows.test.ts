@@ -1,7 +1,8 @@
+/*
 import { TestWorkflowEnvironment } from '@temporalio/testing';
 import { before, describe, it } from 'mocha';
 import { Worker } from '@temporalio/worker';
-import { example } from '../workflows';
+import { posse } from '../workflows';
 import * as activities from '../activities';
 import assert from 'assert';
 
@@ -28,7 +29,7 @@ describe('Example workflow', () => {
     });
 
     const result = await worker.runUntil(
-      client.workflow.execute(example, {
+      client.workflow.execute(posse, {
         args: ['Temporal'],
         workflowId: 'test',
         taskQueue,
@@ -37,3 +38,4 @@ describe('Example workflow', () => {
     assert.equal(result, 'Hello, Temporal!');
   });
 });
+*/

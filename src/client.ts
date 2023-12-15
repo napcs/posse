@@ -1,33 +1,28 @@
+import process from 'process';
 import { Connection, Client } from '@temporalio/client';
-import { example } from './workflows';
+import { posse } from './workflows';
 import { nanoid } from 'nanoid';
+import { TASK_QUEUE_NAME } from './shared';
 
+// @@@SNIPSTART posse_client
 async function run() {
-  // Connect to the default Server location
+  if (process.argv.length <= 2) {
+    console.error('Must specify your content as the command-line argument');
+    process.exit(1);
+  }
+
+  const text = process.argv[2];
   const connection = await Connection.connect({ address: 'localhost:7233' });
-  // In production, pass options to configure TLS and other settings:
-  // {
-  //   address: 'foo.bar.tmprl.cloud',
-  //   tls: {}
-  // }
+  const client = new Client({ connection });
 
-  const client = new Client({
-    connection,
-    // namespace: 'foo.bar', // connects to 'default' namespace if not specified
-  });
-
-  const handle = await client.workflow.start(example, {
-    taskQueue: 'hello-world',
-    // type inference works! args: [name: string]
-    args: ['Temporal'],
-    // in practice, use a meaningful business ID, like customerId or transactionId
+  const handle = await client.workflow.start(posse, {
+    args: [text],
+    taskQueue: TASK_QUEUE_NAME,
     workflowId: 'workflow-' + nanoid(),
   });
-  console.log(`Started workflow ${handle.workflowId}`);
-
-  // optional: wait for client result
   console.log(await handle.result()); // Hello, Temporal!
 }
+// @@@SNIPEND
 
 run().catch((err) => {
   console.error(err);

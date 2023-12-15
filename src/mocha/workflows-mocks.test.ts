@@ -1,7 +1,7 @@
 import { TestWorkflowEnvironment } from '@temporalio/testing';
 import { after, before, it } from 'mocha';
 import { Worker } from '@temporalio/worker';
-import { example } from '../workflows';
+import { posse } from '../workflows';
 import assert from 'assert';
 
 describe('Example workflow with mocks', () => {
@@ -24,17 +24,25 @@ describe('Example workflow with mocks', () => {
       taskQueue,
       workflowsPath: require.resolve('../workflows'),
       activities: {
-        greet: async () => 'Hello, Temporal!',
+        tweet: async () => 'Hello, Temporal!',
+        toot: async () => 'Hello, Temporal!',
+        blueskyPost: async () => 'Hello, Temporal!',
       },
     });
 
     const result = await worker.runUntil(
-      client.workflow.execute(example, {
-        args: ['Temporal'],
+      client.workflow.execute(posse, {
+        args: ['Hello Temporal!'],
         workflowId: 'test',
         taskQueue,
       })
     );
-    assert.equal(result, 'Hello, Temporal!');
+
+    const expected = {
+      tweet: 'Hello, Temporal!',
+      toot: 'Hello, Temporal!',
+    };
+
+    assert.strictEqual(result, expected);
   });
 });

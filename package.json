@@ -8,6 +8,7 @@
     "lint": "eslint .",
     "start": "ts-node src/worker.ts",
     "start.watch": "nodemon src/worker.ts",
+    "start.server": "ts-node server/app.ts",
     "workflow": "ts-node src/client.ts",
     "format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "test": "mocha --exit --require ts-node/register --require source-map-support/register src/mocha/*.test.ts"
@@ -22,15 +23,22 @@
     ]
   },
   "dependencies": {
+    "@atproto/api": "^0.6.23",
     "@temporalio/activity": "^1.8.4",
     "@temporalio/client": "^1.8.4",
     "@temporalio/worker": "^1.8.4",
     "@temporalio/workflow": "^1.8.4",
-    "nanoid": "3.x"
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "masto": "^6.3.3",
+    "nanoid": "3.x",
+    "next": "^14.0.0",
+    "twitter-api-v2": "^1.15.2"
   },
   "devDependencies": {
     "@temporalio/testing": "^1.8.4",
     "@tsconfig/node18": "^1.0.0",
+    "@types/express": "^4.17.21",
     "@types/mocha": "8.x",
     "@types/node": "^16.11.43",
     "@typescript-eslint/eslint-plugin": "^5.0.0",

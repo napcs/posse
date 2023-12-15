@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Posse</title>
+    <script src="htmx.min.js"></script>
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+    <main>
+      <form hx-post="/submit"
+            hx-disabled-elt="#submit"
+            hx-target="#response"
+            hx-swap="innerHTML"
+            hx-on::after-request="if(event.detail.successful) this.reset()"
+            hx-indicator="#loadingMessage">
+          <label for="message">Message</label>
+          <textarea id="message" required name="text" rows="3" maxlength="280"></textarea>
+          <input id="submit" value="Post" type="submit">
+      </form>
+      <div id="loadingMessage" class="indicator">
+        Processing...
+      </div>
+      <div id="response"></div>
+    </main>
+  </body>
+</html>
