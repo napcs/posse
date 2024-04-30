@@ -8,6 +8,7 @@
   </head>
   <body>
     <main>
+      <h1>Publish Once, Syndicate Everywhere.</h1>
       <form hx-post="/submit"
             hx-disabled-elt="#submit"
             hx-target="#response"
@@ -15,7 +16,8 @@
             hx-on::after-request="if(event.detail.successful) this.reset()"
             hx-indicator="#loadingMessage">
           <label for="message">Message</label>
-          <textarea id="message" required name="text" rows="3" maxlength="280"></textarea>
+          <textarea id="message" placeholder="Enter message here."
+                    required name="text" rows="3" maxlength="280"></textarea>
           <input id="submit" value="Post" type="submit">
       </form>
       <div id="loadingMessage" class="indicator">

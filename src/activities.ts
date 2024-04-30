@@ -3,6 +3,7 @@ import 'dotenv/config';
 import { TwitterApi } from 'twitter-api-v2';
 import { createRestAPIClient } from 'masto';
 import { BskyAgent } from '@atproto/api';
+import { RichText } from '@atproto/api'
 
 export async function tweet(text: string): Promise<string> {
   const client = new TwitterApi({
@@ -17,6 +18,7 @@ export async function tweet(text: string): Promise<string> {
 
   return result.data.text;
 }
+
 
 export async function toot(text: string): Promise<string> {
   const masto = createRestAPIClient({
@@ -40,8 +42,15 @@ export async function blueskyPost(text: string): Promise<string> {
     password: process.env.BLUESKY_PASS as string,
   });
 
-  await agent.post({ text });
+  const rt = new RichText({ text });
+  await rt.detectFacets(agent)
 
+  const postRecord = {
+    text: rt.text,
+    facets: rt.facets,
+  }
+
+  await agent.post(postRecord);
   return text;
 }
 // @@@SNIPEND
