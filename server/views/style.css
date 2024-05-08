@@ -33,6 +33,8 @@ body, main { align-items: center; }
 
 body {  background-color: #ddd; }
 
+main { padding: 1em; }
+
 form {
   background-color: var(--main-bg-color);
   border-radius: var(--border-radius);
@@ -59,5 +61,8 @@ input[type=submit]:hover {
 }
 
 @media (min-width: 1024px) {
-  main { width: 40%; }
+  main {
+    padding: 0;
+    width: 40%;
+  }
 }
